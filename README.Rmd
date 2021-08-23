@@ -1,0 +1,38 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# rschtasks
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of rschtasks is to make it easier to created scheduled tasks on a Windows machine in R.
+
+## Installation
+
+You can install the development version of rschtasks from [Github](https://github.com/jmbarbone/rschtasks)
+
+``` r
+remotes::install_github("jmbarbone/rschtasks")
+```
+
+## Examples
+
+To come...
+
+## See also
+
+[taskscheduleR](https://github.com/bnosac/taskscheduleR), available on [CRAN](https://CRAN.R-project.org)
+
