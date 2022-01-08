@@ -16,16 +16,14 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Requires:
     R (>= 3.6.0)
-Imports:
-    utils,
-    fs,
+Imports: 
     glue,
+    fs,
+    utils,
     magrittr,
     mark,
     purrr,
-    R6,
-    rlang,
-    tibble
+    R6
 Suggests:
     rstudioapi,
     testthat (>= 3.0.2),
