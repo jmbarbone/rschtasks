@@ -227,39 +227,41 @@ TaskScheduler <- R6::R6Class(
       private$check_windows()
       private$check_schtasks()
 
-      private$task_name          <- task_name
-      private$system             <- system
-      private$username           <- username
-      private$password0          <- password
-      private$runas_username     <- runas_username
-      private$runas_password0    <- runas_password
-      private$schedule           <- toupper(arg_match(schedule))
-      private$modifier           <- modifier
-      private$days               <- days
-      private$months             <- months
-      private$idle_time          <- idle_time
-      private$task_run           <- task_run
-      private$start_time         <- start_time
-      private$interval           <- interval
-      private$end_time           <- end_time
-      private$duration           <- duration
-      private$terminate          <- terminate
-      private$start_date         <- start_date
-      private$end_date           <- end_date
-      private$channel_name       <- channel_name
-      private$delete_after_final <- delete_after_final
-      private$v1                 <- v1
-      private$force              <- force
-      private$level              <- arg_match(level)
-      private$delay_time         <- delay_time
-      private$format             <- arg_match(format)
-      private$quiet              <- is_true(quiet)
+      private$orig$task_name           <- private$task_name          <- task_name
+      private$orig$system              <- private$system             <- system
+      private$orig$username            <- private$username           <- username
+      private$orig$password0           <- private$password0          <- password
+      private$orig$runas_username      <- private$runas_username     <- runas_username
+      private$orig$runas_password0     <- private$runas_password0    <- runas_password
+      private$orig$schedule            <- private$schedule           <- toupper(arg_match(schedule))
+      private$orig$modifier            <- private$modifier           <- modifier
+      private$orig$days                <- private$days               <- days
+      private$orig$months              <- private$months             <- months
+      private$orig$idle_time           <- private$idle_time          <- idle_time
+      private$orig$task_run            <- private$task_run           <- task_run
+      private$orig$start_time          <- private$start_time         <- start_time
+      private$orig$interval            <- private$interval           <- interval
+      private$orig$end_time            <- private$end_time           <- end_time
+      private$orig$duration            <- private$duration           <- duration
+      private$orig$terminate           <- private$terminate          <- terminate
+      private$orig$start_date          <- private$start_date         <- start_date
+      private$orig$end_date            <- private$end_date           <- end_date
+      private$orig$channel_name        <- private$channel_name       <- channel_name
+      private$orig$delete_after_final  <- private$delete_after_final <- delete_after_final
+      private$orig$v1                  <- private$v1                 <- v1
+      private$orig$force               <- private$force              <- force
+      private$orig$level               <- private$level              <- arg_match(level)
+      private$orig$delay_time          <- private$delay_time         <- delay_time
+      private$orig$format              <- private$format             <- arg_match(format)
+      private$orig$convert             <- private$convert            <- is_true(convert)
+      private$orig$quiet               <- private$quiet              <- is_true(quiet)
 
       invisible(self)
     },
 
     #' @description Runs `schtasks run`
     schtasks_run = function() {
+      private$reset()
       private$param <- "run"
 
       private$check_task_name()
@@ -280,6 +282,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks end`
     schtasks_end = function() {
+      private$reset()
       private$param <- "end"
 
       private$check_task_name()
@@ -299,6 +302,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks create`
     schtasks_create = function() {
+      private$reset()
       private$param <- "create"
 
       private$check_system()
@@ -364,6 +368,7 @@ TaskScheduler <- R6::R6Class(
     #' @description creates a task using an xml file, a special variant for
     #'   `schtasks create`
     schtasks_create_xml = function() {
+      private$reset()
       private$param <- "create_xml"
       private$check_xml_file()
       private$args <- list(xml = xml_file)
@@ -372,6 +377,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks delete`
     schtasks_delete = function() {
+      private$reset()
       private$param <- "delete"
 
       private$check_task_name()
@@ -393,6 +399,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks query`
     schtasks_query = function() {
+      private$reset()
       private$param <- "query"
 
       private$check_system()
@@ -418,6 +425,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks change`
     schtasks_change = function() {
+      private$reset()
       private$param <- "change"
 
       private$check_system()
@@ -468,6 +476,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description Runs `schtasks showsid`
     schtasks_show_sid = function() {
+      private$reset()
       private$param <- "showsid"
       private$check_task_name()
       private$args <- list(tn = private$task_name)
@@ -527,11 +536,26 @@ TaskScheduler <- R6::R6Class(
     output             = NULL,
     stdout             = NULL,
     stderr             = NULL,
+    convert            = TRUE,
     quiet              = FALSE,
 
+    called             = FALSE,
+    orig               = list(),
+
     ## functions ----
+
+    # uses the original entries
+    reset = function() {
+      if (private$called) {
+        for (i in names(private$orig)) {
+          private[[i]] <- private$orig[[i]]
+        }
+      }
+    },
+
     # wrap up
     send = function() {
+      private$called <- TRUE
       private$clean_args()
       private$schtasks()
       private$show()
