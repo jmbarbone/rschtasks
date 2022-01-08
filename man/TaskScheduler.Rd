@@ -103,7 +103,7 @@ schtasks_change(
   quiet = FALSE
 )
 
-schtasks_showsid(task_name)
+schtasks_showsid(task_name, convert = TRUE)
 }
 \description{
 An R6 class for creating and checking a task call and wrappers
