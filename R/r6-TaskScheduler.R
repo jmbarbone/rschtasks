@@ -49,7 +49,9 @@
 #' @param task_run A string in the form of the `path/name` which uniquely
 #'   identifies the scheduled task
 #' @param start_time The start time to run the task.  Time format is `HH:mm` (24
-#'   hour time).  Can accept `POSIXct` or `POSIXlt`.
+#'   hour time).  Can accept `POSIXct` or `POSIXlt`.  Two special cases of
+#'   `"now"` and `"asap"` are accepted; which are converted to the current time
+#'   or the next minute, respectively.
 #' @param interval The repetition interval in minutes.  Only applicable for
 #'   `daily`, `weekly`, `monthly`, `once`.  Valid ranges are 1 - 599940. If
 #'   `end_time` or `duration` are specified, `10` is set as the default.
@@ -917,12 +919,14 @@ TaskScheduler <- R6::R6Class(
     check_start_time = function() {
       if (identical(private$start_time, "now")) {
         private$start_time <- Sys.time()
+      } else if (identical(private$start_time, "asap")) {
+        private$start_time <- fmt_hhmm(Sys.time() + 60)
       }
 
       if (inherits(private$start_time, "POSIXt")) {
         if (round(private$start_time, "mins") == round(Sys.time(), "mins")) {
           message("start_time is delayed a minute to prevent error")
-          private$start_time <- round(Sys.time(), "mins") + 60
+          private$start_time <- trunc(Sys.time(), "mins") + 60
         }
       }
 
