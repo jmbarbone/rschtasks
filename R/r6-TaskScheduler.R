@@ -260,7 +260,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks run`
-    schtasks_run = function() {
+    run = function() {
       private$reset()
       private$param <- "run"
 
@@ -281,7 +281,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks end`
-    schtasks_end = function() {
+    end = function() {
       private$reset()
       private$param <- "end"
 
@@ -301,7 +301,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks create`
-    schtasks_create = function() {
+    create = function() {
       private$reset()
       private$param <- "create"
 
@@ -367,7 +367,7 @@ TaskScheduler <- R6::R6Class(
 
     #' @description creates a task using an xml file, a special variant for
     #'   `schtasks create`
-    schtasks_create_xml = function() {
+    create_xml = function() {
       private$reset()
       private$param <- "create_xml"
       private$check_xml_file()
@@ -376,7 +376,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks delete`
-    schtasks_delete = function() {
+    delete = function() {
       private$reset()
       private$param <- "delete"
 
@@ -398,7 +398,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks query`
-    schtasks_query = function() {
+    query = function() {
       private$reset()
       private$param <- "query"
 
@@ -424,7 +424,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks change`
-    schtasks_change = function() {
+    change = function() {
       private$reset()
       private$param <- "change"
 
@@ -475,7 +475,7 @@ TaskScheduler <- R6::R6Class(
     },
 
     #' @description Runs `schtasks showsid`
-    schtasks_show_sid = function() {
+    show_sid = function() {
       private$reset()
       private$param <- "showsid"
       private$check_task_name()

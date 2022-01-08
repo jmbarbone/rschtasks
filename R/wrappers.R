@@ -14,7 +14,7 @@ schtasks_run <- function(
     username  = username,
     password  = password,
     quiet     = quiet
-  )$schtasks_run()
+  )$run()
 }
 
 #' @export
@@ -33,7 +33,7 @@ schtasks_end <- function(
     username  = username,
     password  = password,
     quiet     = quiet
-  )$schtasks_end()
+  )$end()
 }
 
 #' @export
@@ -93,13 +93,13 @@ schtasks_create <- function(
     level              = level,
     delay_time         = delay_time,
     quiet              = quiet
-  )$schtasks_create()
+  )$create()
 }
 
 #' @export
 #' @rdname TaskScheduler
 schtasks_create_xml <- function(xml_file) {
-  TaskScheduler$new(xml_file = xml_file)$schtasks_create_xml()
+  TaskScheduler$new(xml_file = xml_file)$create_xml()
 }
 
 #' @export
@@ -119,7 +119,7 @@ schtasks_delete <- function(
     password  = password,
     force     = force,
     quiet     = quiet
-  )$schtasks_delete()
+  )$delete()
 }
 
 #' @export
@@ -145,7 +145,7 @@ schtasks_query <- function(
     raw       = raw,
     xml_type  = xml_type,
     quiet     = quiet
-  )$schtasks_query()
+  )$query()
 }
 
 
@@ -194,7 +194,7 @@ schtasks_change <- function(
     delete_after_final = delete_after_final,
     delay_time         = delay_time,
     quiet              = quiet
-  )$schtasks_change()
+  )$change()
 }
 
 #' @export
@@ -203,5 +203,5 @@ schtasks_showsid <- function(task_name, convert = TRUE) {
   TaskScheduler$new(
     task_name = task_name,
     convert   = convert
-  )$schtasks_show_sid()
+  )$show_sid()
 }
