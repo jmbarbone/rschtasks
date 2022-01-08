@@ -3,22 +3,37 @@
 #' @rdname TaskScheduler
 schtasks_run <- function(
   task_name,
-  system = NULL,
+  system   = NULL,
   username = NULL,
-  password = NULL
+  password = NULL,
+  quiet    = FALSE
 ) {
-  do_schtasks(gather_params())$schtasks_run()
+  TaskScheduler$new(
+    task_name = task_name,
+    system    = system,
+    username  = username,
+    password  = password,
+    quiet     = quiet
+  )$schtasks_run()
 }
 
 #' @export
 #' @rdname TaskScheduler
 schtasks_end <- function(
   task_name,
-  system = NULL,
+  system   = NULL,
   username = NULL,
-  password = NULL
+  password = NULL,
+  quiet    = FALSE
+
 ) {
-  do_schtasks(gather_params())$schtasks_end()
+  TaskScheduler$new(
+    task_name = task_name,
+    system    = system,
+    username  = username,
+    password  = password,
+    quiet     = quiet
+  )$schtasks_end()
 }
 
 #' @export
@@ -48,15 +63,43 @@ schtasks_create <- function(
   v1                 = FALSE,
   force              = FALSE,
   level              = c("limited", "highest"),
-  delay_time         = NULL
+  delay_time         = NULL,
+  quiet              = FALSE
 ) {
-  do_schtasks(gather_params())$schtasks_create()
+  TaskScheduler$new(
+    task_name          = task_name,
+    system             = system,
+    username           = username,
+    password           = password,
+    runas_username     = runas_username,
+    runas_password     = runas_password,
+    schedule           = schedule,
+    modifier           = modifier,
+    days               = days,
+    months             = months,
+    idle_time          = idle_time,
+    task_run           = task_run,
+    start_time         = start_time,
+    interval           = interval,
+    end_time           = end_time,
+    duration           = duration,
+    terminate          = terminate,
+    start_date         = start_date,
+    end_date           = end_date,
+    channel_name       = channel_name,
+    delete_after_final = delete_after_final,
+    v1                 = v1,
+    force              = force,
+    level              = level,
+    delay_time         = delay_time,
+    quiet              = quiet
+  )$schtasks_create()
 }
 
 #' @export
 #' @rdname TaskScheduler
 schtasks_create_xml <- function(xml_file) {
-  do_schtasks(gather_params())$schtasks_create_xml()
+  TaskScheduler$new(xml_file = xml_file)$schtasks_create_xml()
 }
 
 #' @export
@@ -66,9 +109,17 @@ schtasks_delete <- function(
   system   = NULL,
   username = NULL,
   password = NULL,
-  force    = FALSE
+  force    = FALSE,
+  quiet    = FALSE
 ) {
-  do_schtasks(gather_params())$schtasks_delete()
+  TaskScheduler$new(
+    task_name = task_name,
+    system    = system,
+    username  = username,
+    password  = password,
+    force     = force,
+    quiet     = quiet
+  )$schtasks_delete()
 }
 
 #' @export
@@ -81,9 +132,20 @@ schtasks_query <- function(
   no_header = FALSE,
   verbose   = FALSE,
   raw       = FALSE,
-  xml_type  = NULL
+  xml_type  = NULL,
+  quiet     = FALSE
 ) {
-  do_schtasks(gather_params())$schtasks_query()
+  TaskScheduler$new(
+    system    = system,
+    username  = username,
+    password  = password,
+    format    = format,
+    no_header = no_header,
+    verbose   = verbose,
+    raw       = raw,
+    xml_type  = xml_type,
+    quiet     = quiet
+  )$schtasks_query()
 }
 
 
@@ -108,15 +170,37 @@ schtasks_change <- function(
   enable             = TRUE,
   disable            = FALSE,
   delete_after_final = FALSE,
-  delay_time         = NULL
+  delay_time         = NULL,
+  quiet              = FALSE
 ) {
-  do_schtasks(gather_params())$schtasks_change()
+  TaskScheduler$new(
+    task_name          = task_name,
+    system             = system,
+    username           = username,
+    password           = password,
+    runas_username     = runas_username,
+    runas_password     = runas_password,
+    task_run           = task_run,
+    start_time         = start_time,
+    interval           = interval,
+    end_time           = end_time,
+    duration           = duration,
+    terminate          = terminate,
+    start_date         = start_date,
+    end_date           = end_date,
+    level              = level,
+    enable             = enable,
+    disable            = disable,
+    delete_after_final = delete_after_final,
+    delay_time         = delay_time,
+    quiet              = quiet
+  )$schtasks_change()
 }
 
 #' @export
 #' @rdname TaskScheduler
 schtasks_showsid <- function(task_name) {
-  do_schtasks(gather_params())$schtasks_show_sid()
+  TaskScheduler$new(task_name = task_name)$schtasks_show_sid()
 }
 
 
@@ -133,24 +217,3 @@ schtasks_showsid <- function(task_name) {
 do_schtasks <- function(args) {
   do.call(TaskScheduler$new, args)
 }
-
-#' Gather params
-#'
-#' Gathers the formals and args passed in a function
-#'
-#' @keywords internal
-#' @examples
-#' foo <- function(a = 1, b = 3, c = 1:3, ..., .param = a) {
-#'   gather_params2()
-#' }
-#'
-#' # returns in original order
-#' foo(c = 1, b = NULL)
-#'
-#' @noRd
-gather_params <- function() {
-  forms <- formals(sys.function(1))
-  out <- c(as.list(sys.call(1))[-1], forms)
-  out[!duplicated(names(out))][names(forms)]
-}
-
