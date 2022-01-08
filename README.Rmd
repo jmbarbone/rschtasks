@@ -30,7 +30,54 @@ remotes::install_github("jmbarbone/rschtasks")
 
 ## Examples
 
-To come...
+```{r}
+library(rschtasks)
+```
+
+Create an object with the task parameters.
+This includes several checks to make sure the tasks are set up properly, with a few additional features.
+
+```{r R6 example}
+task <- TaskScheduler$new(
+  task_name  = "open notepad",
+  task_run   = "notepad",
+  schedule   = "once",
+  start_time = "now",
+  quiet      = TRUE,
+  force      = TRUE
+)
+```
+
+With the task you can run commands and see the results and calls.
+The task object can be reused.
+
+```{r R6 example tasks}
+task$create()
+task$result
+task$system_call
+
+task$show_sid()
+task$result
+task$system_call
+
+task$delete()
+task$result
+task$system_call
+```
+
+Alternatively, wrappers are provided and can be used instead.
+
+```{r example}
+schtasks_create(
+  "open notepad",
+  task_run = "notepad",
+  schedule = "once",
+  start_time = "asap"
+)
+schtasks_showsid("open notepad")
+schtasks_delete("open notepad", force = TRUE)
+```
+
 
 ## See also
 
