@@ -951,13 +951,11 @@ TaskScheduler <- R6::R6Class(
       }
 
       if (inherits(private$start_time, "POSIXt")) {
-        if (round(private$start_time, "mins") == round(Sys.time(), "mins")) {
+        if (trunc(private$start_time, "mins") == trunc(Sys.time(), "mins")) {
           message("start_time is delayed a minute to prevent error")
           private$start_time <- trunc(Sys.time(), "mins") + 60
         }
-      }
 
-      if (!is.null(private$start_time)) {
         private$start_time <- fmt_hhmm(private$start_time)
       }
     },
