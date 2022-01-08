@@ -203,17 +203,4 @@ schtasks_showsid <- function(task_name) {
   TaskScheduler$new(task_name = task_name)$schtasks_show_sid()
 }
 
-
-# helpers -----------------------------------------------------------------
-
-#' Schedule task wrapper
-#'
-#' Wrapper for calling
-#'
-#' @param args args to be passed
-#'
-#' @keywords internal
-#' @noRd
-do_schtasks <- function(args) {
-  do.call(TaskScheduler$new, args)
 }
