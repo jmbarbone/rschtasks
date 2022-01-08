@@ -4,9 +4,9 @@
 \name{rschtasks-package}
 \alias{rschtasks}
 \alias{rschtasks-package}
-\title{rschtasks: What the Package Does (One Line, Title Case)}
+\title{rschtasks: Interface for schtasks}
 \description{
-What the package does (one paragraph).
+An R interface for scheduling task on Windows.
 }
 \author{
 \strong{Maintainer}: Jordan Barbone \email{jmbarbone@gmail.com} (\href{https://orcid.org/0000-0001-9788-3628}{ORCID}) [copyright holder]
