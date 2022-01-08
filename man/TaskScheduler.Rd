@@ -272,6 +272,7 @@ Initializes the call
   enable = FALSE,
   disable = FALSE,
   env = "",
+  convert = TRUE,
   quiet = FALSE
 )}\if{html}{\out{</div>}}
 }

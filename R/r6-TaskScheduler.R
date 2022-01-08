@@ -87,6 +87,7 @@
 #' @param disable If `TRUE` disables the scheduled task
 #' @param env character vector of name=value strings to set environment
 #'   variables (passed to [base::system2()])
+#' @param convert Converts the output (currently only valid for `show_sid`)
 #' @param quiet If `TRUE` will suppress outputs
 #'
 #' @section Modifiers:
@@ -217,6 +218,7 @@ TaskScheduler <- R6::R6Class(
       enable             = FALSE,
       disable            = FALSE,
       env                = "",
+      convert            = TRUE,
       quiet              = FALSE
     ) {
 
@@ -642,9 +644,26 @@ TaskScheduler <- R6::R6Class(
       }
 
       self$result <- private$stdout
-      class(self$result) <- c("rschtasks_result", "character")
-      if (!private$quiet) print(self$result)
-      invisible(self$result)
+
+      if (private$convert) {
+        # do others need conversion?
+        self$result <- switch(
+          private$param,
+          # S-1-5-87-907618518-2201690017-3345919478-1888295809-4191631242
+          showsid = regmatches(self$result, regexpr("[A-Z][-][0-9-]{60}", self$result)),
+          self$result
+        )
+      }
+
+      self$result <- structure(
+        self$result,
+        class = c("rschtasks_result", "character"),
+        stdout = private$stdout
+      )
+
+      if (!private$quiet) {
+        print(self$result)
+      }
     },
 
     ## arg checkers ------------------------------------------------------------
@@ -940,15 +959,18 @@ TaskScheduler <- R6::R6Class(
   )
 )
 
+
+# print -------------------------------------------------------------------
+
+
 #' @export
 print.rschtasks_call <- function(x, ...) {
-  cat(crayon::yellow(x[[1]]), x[[2]], "\n")
+  cat(crayon::yellow(x[[1]]), x$args, "\n")
   invisible(x)
 }
 
 #' @export
 print.rschtasks_result <- function(x, ...) {
-  out <- gsub("^SUCCESS", crayon::green("SUCCESS"), x)
-  cat(out, "\n")
+  cat(gsub("^SUCCESS", crayon::green("SUCCESS"), attr(x, "stdout")), "\n")
   invisible(x)
 }

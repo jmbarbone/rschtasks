@@ -199,8 +199,9 @@ schtasks_change <- function(
 
 #' @export
 #' @rdname TaskScheduler
-schtasks_showsid <- function(task_name) {
-  TaskScheduler$new(task_name = task_name)$schtasks_show_sid()
-}
-
+schtasks_showsid <- function(task_name, convert = TRUE) {
+  TaskScheduler$new(
+    task_name = task_name,
+    convert   = convert
+  )$schtasks_show_sid()
 }
