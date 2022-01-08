@@ -589,6 +589,9 @@ TaskScheduler <- R6::R6Class(
         timeout   = 0
       ))
 
+      # remove password
+      self$system_call$args <- sub("/p\\s [[:alnum:][:punct:]]", "/p ****", self$system_call$args)
+
       private$stderr <- readLines(stderr_file)
       if (length(private$stderr)) {
         cat(self$system_call[[1]], " ", paste(self$system_call$args, collpse = " "), "\n", sep = "")
