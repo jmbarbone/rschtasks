@@ -219,14 +219,14 @@ schtasks_query(
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TaskScheduler$new()}}
-\item \href{#method-schtasks_run}{\code{TaskScheduler$schtasks_run()}}
-\item \href{#method-schtasks_end}{\code{TaskScheduler$schtasks_end()}}
-\item \href{#method-schtasks_create}{\code{TaskScheduler$schtasks_create()}}
-\item \href{#method-schtasks_create_xml}{\code{TaskScheduler$schtasks_create_xml()}}
-\item \href{#method-schtasks_delete}{\code{TaskScheduler$schtasks_delete()}}
-\item \href{#method-schtasks_query}{\code{TaskScheduler$schtasks_query()}}
-\item \href{#method-schtasks_change}{\code{TaskScheduler$schtasks_change()}}
-\item \href{#method-schtasks_show_sid}{\code{TaskScheduler$schtasks_show_sid()}}
+\item \href{#method-run}{\code{TaskScheduler$run()}}
+\item \href{#method-end}{\code{TaskScheduler$end()}}
+\item \href{#method-create}{\code{TaskScheduler$create()}}
+\item \href{#method-create_xml}{\code{TaskScheduler$create_xml()}}
+\item \href{#method-delete}{\code{TaskScheduler$delete()}}
+\item \href{#method-query}{\code{TaskScheduler$query()}}
+\item \href{#method-change}{\code{TaskScheduler$change()}}
+\item \href{#method-show_sid}{\code{TaskScheduler$show_sid()}}
 \item \href{#method-clone}{\code{TaskScheduler$clone()}}
 }
 }
@@ -317,7 +317,9 @@ valid for schedule \code{on_idle}.  Valid range from 1 to 999 (minutes).}
 identifies the scheduled task}
 
 \item{\code{start_time}}{The start time to run the task.  Time format is \code{HH:mm} (24
-hour time).  Can accept \code{POSIXct} or \code{POSIXlt}.}
+hour time).  Can accept \code{POSIXct} or \code{POSIXlt}.  Two special cases of
+\code{"now"} and \code{"asap"} are accepted; which are converted to the current time
+or the next minute, respectively.}
 
 \item{\code{interval}}{The repetition interval in minutes.  Only applicable for
 \code{daily}, \code{weekly}, \code{monthly}, \code{once}.  Valid ranges are 1 - 599940. If
@@ -377,92 +379,94 @@ concatenate all the \code{XML} definitions.}
 \item{\code{env}}{character vector of name=value strings to set environment
 variables (passed to \code{\link[base:system2]{base::system2()}})}
 
+\item{\code{convert}}{Converts the output (currently only valid for \code{show_sid})}
+
 \item{\code{quiet}}{If \code{TRUE} will suppress outputs}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_run"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_run}{}}}
-\subsection{Method \code{schtasks_run()}}{
+\if{html}{\out{<a id="method-run"></a>}}
+\if{latex}{\out{\hypertarget{method-run}{}}}
+\subsection{Method \code{run()}}{
 Runs \verb{schtasks run}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_run()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$run()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_end"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_end}{}}}
-\subsection{Method \code{schtasks_end()}}{
+\if{html}{\out{<a id="method-end"></a>}}
+\if{latex}{\out{\hypertarget{method-end}{}}}
+\subsection{Method \code{end()}}{
 Runs \verb{schtasks end}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_end()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$end()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_create"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_create}{}}}
-\subsection{Method \code{schtasks_create()}}{
+\if{html}{\out{<a id="method-create"></a>}}
+\if{latex}{\out{\hypertarget{method-create}{}}}
+\subsection{Method \code{create()}}{
 Runs \verb{schtasks create}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_create()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$create()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_create_xml"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_create_xml}{}}}
-\subsection{Method \code{schtasks_create_xml()}}{
+\if{html}{\out{<a id="method-create_xml"></a>}}
+\if{latex}{\out{\hypertarget{method-create_xml}{}}}
+\subsection{Method \code{create_xml()}}{
 creates a task using an xml file, a special variant for
 \verb{schtasks create}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_create_xml()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$create_xml()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_delete"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_delete}{}}}
-\subsection{Method \code{schtasks_delete()}}{
+\if{html}{\out{<a id="method-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-delete}{}}}
+\subsection{Method \code{delete()}}{
 Runs \verb{schtasks delete}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_delete()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$delete()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_query"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_query}{}}}
-\subsection{Method \code{schtasks_query()}}{
+\if{html}{\out{<a id="method-query"></a>}}
+\if{latex}{\out{\hypertarget{method-query}{}}}
+\subsection{Method \code{query()}}{
 Runs \verb{schtasks query}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_query()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$query()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_change"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_change}{}}}
-\subsection{Method \code{schtasks_change()}}{
+\if{html}{\out{<a id="method-change"></a>}}
+\if{latex}{\out{\hypertarget{method-change}{}}}
+\subsection{Method \code{change()}}{
 Runs \verb{schtasks change}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_change()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$change()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-schtasks_show_sid"></a>}}
-\if{latex}{\out{\hypertarget{method-schtasks_show_sid}{}}}
-\subsection{Method \code{schtasks_show_sid()}}{
+\if{html}{\out{<a id="method-show_sid"></a>}}
+\if{latex}{\out{\hypertarget{method-show_sid}{}}}
+\subsection{Method \code{show_sid()}}{
 Runs \verb{schtasks showsid}
 check days
 check months
 check idle_time
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$schtasks_show_sid()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TaskScheduler$show_sid()}\if{html}{\out{</div>}}
 }
 
 }
