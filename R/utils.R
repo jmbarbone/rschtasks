@@ -50,3 +50,13 @@ try_dates <- function(x) {
     )
   )
 }
+
+
+fmt_hhmm <- function(x = Sys.time()) {
+  stopifnot(inherits(x, "POSIXt"))
+  format(x, format = "%H:%M")
+}
+
+is_true_false <- function(x) {
+  is.logical(x) && length(x) == 1L && !is.na(x)
+}

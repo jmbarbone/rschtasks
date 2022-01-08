@@ -188,7 +188,8 @@ TaskScheduler <- R6::R6Class(
       password           = NULL,
       runas_username     = NULL,
       runas_password     = NULL,
-      schedule           = NULL,
+      # note once is first
+      schedule           = c("once", "minute", "hourly", "daily", "weekly", "monthly", "onstart", "onlogon", "onidle", "onevent"),
       modifier           = NULL,
       days               = NULL,
       months             = NULL,
@@ -216,7 +217,7 @@ TaskScheduler <- R6::R6Class(
       enable             = FALSE,
       disable            = FALSE,
       env                = "",
-      quiet = FALSE
+      quiet              = FALSE
     ) {
 
       private$check_windows()
@@ -228,7 +229,7 @@ TaskScheduler <- R6::R6Class(
       private$password0          <- password
       private$runas_username     <- runas_username
       private$runas_password0    <- runas_password
-      private$schedule           <- schedule
+      private$schedule           <- toupper(arg_match(schedule))
       private$modifier           <- modifier
       private$days               <- days
       private$months             <- months
@@ -245,9 +246,12 @@ TaskScheduler <- R6::R6Class(
       private$delete_after_final <- delete_after_final
       private$v1                 <- v1
       private$force              <- force
-      private$level              <- level
+      private$level              <- arg_match(level)
       private$delay_time         <- delay_time
       private$format             <- arg_match(format)
+      private$quiet              <- is_true(quiet)
+
+      invisible(self)
     },
 
     #' @description Runs `schtasks run`
@@ -263,6 +267,7 @@ TaskScheduler <- R6::R6Class(
         tn = private$task_name,
         s  = private$system,
         u  = private$username,
+        i  = TRUE, # immediately
         p  = private$password0
       )
 
@@ -369,12 +374,14 @@ TaskScheduler <- R6::R6Class(
       private$check_system()
       private$check_username()
       private$check_password()
+      private$check_force()
 
       private$args <- list(
         tn = private$task_name,
         s = private$system,
         u = private$username,
-        p = private$password0
+        p = private$password0,
+        f = private$force
       )
 
       private$send()
@@ -477,6 +484,8 @@ TaskScheduler <- R6::R6Class(
     password = NULL,
     runas_username = NULL,
     runas_password = NULL,
+    # note: once is first
+    # schedule = c("once", "minute", "hourly", "daily", "weekly", "monthly", "onstart", "onlogon", "onidle", "onevent"),
     schedule = NULL,
     modifier = NULL,
     days = NULL,
@@ -514,6 +523,7 @@ TaskScheduler <- R6::R6Class(
     output = NULL,
     stdout = NULL,
     stderr = NULL,
+    quiet  = FALSE,
 
     ## functions ----
     # wrap up
@@ -521,6 +531,7 @@ TaskScheduler <- R6::R6Class(
       private$clean_args()
       private$schtasks()
       private$show()
+      invisible(self)
     },
 
     clean_args = function() {
@@ -530,11 +541,19 @@ TaskScheduler <- R6::R6Class(
 
       ok <- !purrr::map_lgl(private$args, ~is_false(.x) | is_null(.x))
       private$args <- private$args[ok]
-
+      spaces <- grepl("[[:space:]]", private$args)
       nm <- paste0("/", names(private$args))
       private$args <- as.vector(private$args, "character")
-      private$args <- backslash(private$args)
-      private$args <- paste(nm, shQuote(private$args))
+
+      if (any(spaces)) {
+        private$args[spaces] <- backslash(private$args[spaces])
+        private$args[spaces] <- paste(nm[spaces], shQuote(private$args[spaces]))
+      }
+
+      if (any(!spaces)) {
+        private$args[!spaces] <- paste(nm[!spaces], private$args[!spaces])
+      }
+
       private$args <- trimws(private$args)
     },
 
@@ -543,13 +562,16 @@ TaskScheduler <- R6::R6Class(
       stderr_file <- tempfile()
       on.exit(fs::file_delete(stderr_file), add = TRUE)
 
-      self$system_call <- list(
-        "schtasks",
-        # args = c(paste0("/", private$param), private$args)
-        args = c(paste0("/", private$param), private$args)
+      self$system_call <- structure(
+        list(
+          "schtasks",
+          # args = c(paste0("/", private$param), private$args)
+          args = c(paste0("/", private$param), private$args)
+        ),
+        class = c("rschtasks_call", "list")
       )
 
-      private$stdout <- system2(
+      private$stdout <- suppressWarnings(system2(
         "schtasks",
         args      = self$system_call$args,
         stdout    = TRUE,
@@ -561,9 +583,14 @@ TaskScheduler <- R6::R6Class(
         minimized = FALSE,
         invisible = TRUE,
         timeout   = 0
-      )
+      ))
 
       private$stderr <- readLines(stderr_file)
+      if (length(private$stderr)) {
+        cat(self$system_call[[1]], " ", paste(self$system_call$args, collpse = " "), "\n", sep = "")
+        warn(private$stderr)
+      }
+      invisible(self)
     },
 
     check_windows = function() {
@@ -588,6 +615,8 @@ TaskScheduler <- R6::R6Class(
     # private?
     show = function() {
       if (!is_null(private$warnings)) {
+        # TODO use errors instead of warnings?
+        # TODO add hooks: (Handle is invalid --> suggest force = TRUE)
         warn(private$warnings)
       }
 
@@ -601,9 +630,9 @@ TaskScheduler <- R6::R6Class(
             list = schtasks_query_list_read(private$stdout),
             # table = private$stdout,
             {
-              if (!self$quiet) {
-              cat(private$stdout, sep = "\n")
-              private$stdout
+              if (private$quiet) {
+                cat(private$stdout, sep = "\n")
+                private$stdout
               }
             }
           )
@@ -613,7 +642,8 @@ TaskScheduler <- R6::R6Class(
       }
 
       self$result <- private$stdout
-      if (!self$quiet) cat(self$result, sep = "\n")
+      class(self$result) <- c("rschtasks_result", "character")
+      if (!private$quiet) print(self$result)
       invisible(self$result)
     },
 
@@ -704,22 +734,32 @@ TaskScheduler <- R6::R6Class(
 
     #' check days
     check_days = function() {
+      # browser()
 
+      if (private$schedule == "ONCE") {
+        private$days <- NULL
+        return()
+      }
+
+      private$days <- private$days %||% "*"
       private$days <- tolower(private$days)
 
-      private$days <- switch(
-        tolower(substr(private$days, 1, 3)),
-        monday    = "mon",
-        tuesday   = "tue",
-        wednesday = "wed",
-        thursday  = "thu",
-        friday    = "fri",
-        saturday  = "sat",
-        sunday    = "sun",
-        private$days
+      private$days <- purrr::map_chr(
+        private$days,
+        ~switch(
+          tolower(substr(.x, 1, 3)),
+          monday    = "mon",
+          tuesday   = "tue",
+          wednesday = "wed",
+          thursday  = "thu",
+          friday    = "fri",
+          saturday  = "sat",
+          sunday    = "sun",
+          .x
+        )
       )
 
-      if (is_null(private$days) || private$days == "*") {
+      if (is_null(private$days) || is_true(private$days == "*")) {
         return()
       }
 
@@ -743,7 +783,7 @@ TaskScheduler <- R6::R6Class(
 
     #' check months
     check_months = function() {
-      if (is_null(private$months) || private$months == "*") {
+      if (is_null(private$months) || is_true(private$months == "*")) {
         return()
       }
 
@@ -849,12 +889,40 @@ TaskScheduler <- R6::R6Class(
       }
 
       private$schedule <-  sub("_", "", private$schedule)
+
+      if (private$schedule == "ONCE") {
+        private$days <- NULL
+      }
+    },
+
+    check_start_time = function() {
+      if (identical(private$start_time, "now")) {
+        private$start_time <- Sys.time()
+      }
+
+      if (inherits(private$start_time, "POSIXt")) {
+        if (round(private$start_time, "mins") == round(Sys.time(), "mins")) {
+          message("start_time is delayed a minute to prevent error")
+          private$start_time <- round(Sys.time(), "mins") + 60
+        }
+      }
+
+      if (!is.null(private$start_time)) {
+        private$start_time <- fmt_hhmm(private$start_time)
+      }
+    },
+
+    check_force = function() {
+      if (!is_true_false(private$force)) {
+        abort("force must be TRUE or FALSE")
+      }
     },
 
     ## Null functions ----------------------------------------------------------
 
-    check_end_time           = function() { },
-    check_start_time         = function() { },
+    check_end_time           = function() { }, # similar to start time?
+    check_end_date           = function() { },
+    check_start_date         = function() { },
     check_system             = function() { },
     check_username           = function() { },
     check_runas_username     = function() { },
@@ -864,11 +932,23 @@ TaskScheduler <- R6::R6Class(
     check_channel_name       = function() { },
     check_delete_after_final = function() { },
     check_v1                 = function() { },
-    check_force              = function() { },
     check_level              = function() { },
     check_xml_type           = function() { },
     check_verbose            = function() { },
-    check_no_header          = function() { }
+    check_no_header          = function() { },
+    check_idletime           = function() { }
   )
 )
 
+#' @export
+print.rschtasks_call <- function(x, ...) {
+  cat(crayon::yellow(x[[1]]), x[[2]], "\n")
+  invisible(x)
+}
+
+#' @export
+print.rschtasks_result <- function(x, ...) {
+  out <- gsub("^SUCCESS", crayon::green("SUCCESS"), x)
+  cat(out, "\n")
+  invisible(x)
+}

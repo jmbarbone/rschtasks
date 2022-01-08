@@ -12,9 +12,21 @@
 \alias{schtasks_showsid}
 \title{Task Scheduling}
 \usage{
-schtasks_run(task_name, system = NULL, username = NULL, password = NULL)
+schtasks_run(
+  task_name,
+  system = NULL,
+  username = NULL,
+  password = NULL,
+  quiet = FALSE
+)
 
-schtasks_end(task_name, system = NULL, username = NULL, password = NULL)
+schtasks_end(
+  task_name,
+  system = NULL,
+  username = NULL,
+  password = NULL,
+  quiet = FALSE
+)
 
 schtasks_create(
   task_name,
@@ -41,7 +53,8 @@ schtasks_create(
   v1 = FALSE,
   force = FALSE,
   level = c("limited", "highest"),
-  delay_time = NULL
+  delay_time = NULL,
+  quiet = FALSE
 )
 
 schtasks_create_xml(xml_file)
@@ -51,7 +64,8 @@ schtasks_delete(
   system = NULL,
   username = NULL,
   password = NULL,
-  force = FALSE
+  force = FALSE,
+  quiet = FALSE
 )
 
 schtasks_query(
@@ -62,7 +76,8 @@ schtasks_query(
   no_header = FALSE,
   verbose = FALSE,
   raw = FALSE,
-  xml_type = NULL
+  xml_type = NULL,
+  quiet = FALSE
 )
 
 schtasks_change(
@@ -84,7 +99,8 @@ schtasks_change(
   enable = TRUE,
   disable = FALSE,
   delete_after_final = FALSE,
-  delay_time = NULL
+  delay_time = NULL,
+  quiet = FALSE
 )
 
 schtasks_showsid(task_name)
@@ -188,6 +204,7 @@ schtasks_query(
   verbose = TRUE
 )
 }
+
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -226,7 +243,8 @@ Initializes the call
   password = NULL,
   runas_username = NULL,
   runas_password = NULL,
-  schedule = NULL,
+  schedule = c("once", "minute", "hourly", "daily", "weekly", "monthly", "onstart",
+    "onlogon", "onidle", "onevent"),
   modifier = NULL,
   days = NULL,
   months = NULL,
