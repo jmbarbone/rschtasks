@@ -249,7 +249,7 @@ TaskScheduler <- R6::R6Class(
       private$orig$channel_name        <- private$channel_name       <- channel_name
       private$orig$delete_after_final  <- private$delete_after_final <- delete_after_final
       private$orig$v1                  <- private$v1                 <- v1
-      private$orig$force               <- private$force              <- force
+      private$orig$force               <- private$force              <- is_true(force)
       private$orig$level               <- private$level              <- arg_match(level)
       private$orig$delay_time          <- private$delay_time         <- delay_time
       private$orig$format              <- private$format             <- arg_match(format)
@@ -962,14 +962,10 @@ TaskScheduler <- R6::R6Class(
       }
     },
 
-    check_force = function() {
-      if (!is_true_false(private$force)) {
-        abort("force must be TRUE or FALSE")
-      }
-    },
 
     ## Null functions ----------------------------------------------------------
 
+    check_force              = function() { },
     check_end_time           = function() { }, # similar to start time?
     check_end_date           = function() { },
     check_start_date         = function() { },
