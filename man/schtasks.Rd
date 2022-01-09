@@ -316,7 +316,7 @@ schtasks_query(
 
 \item{\code{system_call}}{The system call of the function}
 
-\item{\code{exec}}{Should schtask.exe be executed?  For testing purposes only.}
+\item{\code{exec}}{Should schtasks.exe be executed?  For testing purposes only.}
 }
 \if{html}{\out{</div>}}
 }

@@ -17,7 +17,7 @@ TaskScheduler <- R6::R6Class(
     #' @field system_call The system call of the function
     system_call = NULL,
 
-    #' @field exec Should schtask.exe be executed?  For testing purposes only.
+    #' @field exec Should schtasks.exe be executed?  For testing purposes only.
     exec = TRUE,
 
     #' @description Initializes the call
