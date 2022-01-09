@@ -25,9 +25,9 @@ forwardslash <- function(x) {
   gsub("\\\\", "/", x)
 }
 
-private <- function(x, y, ...) {
+private <- function(.x, .y, ...) {
   # For some testing
-  res <- x$.__enclos_env__$private[[y]]
+  res <- .x$.__enclos_env__$private[[.y]]
 
   if (is.function(res)) {
     res(...)
