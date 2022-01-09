@@ -17,13 +17,16 @@ RoxygenNote: 7.1.2
 Requires:
     R (>= 3.6.0)
 Imports: 
+    crayon,
     glue,
     fs,
     utils,
     magrittr,
     mark,
     purrr,
-    R6
+    R6,
+    rlang,
+    tibble
 Suggests:
     rstudioapi,
     testthat (>= 3.0.2),

@@ -2,6 +2,7 @@
 % Please edit documentation in R/r6-TaskScheduler.R, R/wrappers.R
 \name{TaskScheduler}
 \alias{TaskScheduler}
+\alias{schtasks}
 \alias{schtasks_run}
 \alias{schtasks_end}
 \alias{schtasks_create}
@@ -105,6 +106,107 @@ schtasks_change(
 
 schtasks_showsid(task_name, convert = TRUE)
 }
+\arguments{
+\item{task_name}{The path/name of the task to run now}
+
+\item{system}{The remote system to connect to}
+
+\item{username}{The user context under which the \code{schtasks.exe} should
+execute}
+
+\item{password}{The password for the given user context}
+
+\item{quiet}{If \code{TRUE} will suppress outputs}
+
+\item{runas_username}{The "run as" user account (user context) under which
+the tasks runs.  For the system account, valid values are \code{""}, \code{"NT AUTHORITY/SYSTEM"}, or \code{"SYSTEM"}.  For v2 tasks, \code{"NT AUTHORITY/LOCALSERVICE"} and \code{"NT AUTHORITYNETWORKSERVICE"} are also
+available as well as the well known SIDs for all three.}
+
+\item{runas_password}{The password for the "run as" user.}
+
+\item{schedule}{The schedule frequency.  Valid schedule types are : \code{minute},
+\code{hourly}, \code{daily}, \code{weekly}, \code{monthly}, \code{once}, \code{on_start}, \code{on_logon},
+\code{on_idle}, and \code{on_event}}
+
+\item{modifier}{Refines the schedule type to allow finer control over
+schedule recurrence.  See section \code{Modifiers} for more details.}
+
+\item{days}{The day of the week to run the task.  Can be either the name of
+the week (or an abbreviation).  If \code{schedule} is \code{monthly} can accept 1-31.
+Use \code{*} to specify all months.}
+
+\item{months}{The month(s) of the year.  Defaults to the first of the month.
+Can use either the whole month (\code{month.name}) or month abbreviation
+(\code{month.abb}).}
+
+\item{idle_time}{The amount of idle time to wait before running a task. Only
+valid for schedule \code{on_idle}.  Valid range from 1 to 999 (minutes).}
+
+\item{task_run}{A string in the form of the \code{path/name} which uniquely
+identifies the scheduled task}
+
+\item{start_time}{The start time to run the task.  Time format is \code{HH:mm} (24
+hour time).  Can accept \code{POSIXct} or \code{POSIXlt}.  Two special cases of
+\code{"now"} and \code{"asap"} are accepted; which are converted to the current time
+or the next minute, respectively.}
+
+\item{interval}{The repetition interval in minutes.  Only applicable for
+\code{daily}, \code{weekly}, \code{monthly}, \code{once}.  Valid ranges are 1 - 599940. If
+\code{end_time} or \code{duration} are specified, \code{10} is set as the default.}
+
+\item{end_time}{The end time to run the task. The time format is \code{HH:mm} (24
+hour time).  Not applicable for \verb{on_*} schedules.}
+
+\item{duration}{The duration to run the task.  The time format is \code{HH:MM}.
+This is not applicable with \code{end_time}.  If \code{v1} is \code{TRUE} and \code{interval}
+is set, the duration defaults to \code{01:00}.}
+
+\item{terminate}{If \code{TRUE}, terminates the task at the \code{end_time} or
+\verb{duration time}.  This is not applicable for schedule types: \code{on_start},
+\code{on_logon}, \code{on_idle}, and \code{on_event}.`}
+
+\item{start_date}{The first date on which the task runs. Not applicable for
+schedules \code{once} or \verb{on_*}.}
+
+\item{end_date}{end_date The last date on which the task runs. Not applicable
+for schedules \code{once} or \verb{on_*}.}
+
+\item{channel_name}{The event channel for \code{on_event} triggers}
+
+\item{delete_after_final}{If \code{TRUE} marks the task for deletion after its
+final run.}
+
+\item{v1}{If \code{TRUE} creates a task visible to pre-Vista platforms}
+
+\item{force}{If \code{TRUE} forcefully creates the task and suppresses cmd
+warnings if the task already exists.}
+
+\item{level}{The run level for the job, either \code{limited} or \code{highest}.}
+
+\item{delay_time}{The wait time to delay the running of the task after the
+trigger is fired.  Time format is \code{mmmm::ss}.  Only valid for schedules
+\code{on_start}, \code{on_logon}, and \code{on_event}.}
+
+\item{xml_file}{A path to a \code{.xml} file}
+
+\item{format}{The format for the output.  One of: \code{csv}, \code{list}, or \code{table}}
+
+\item{no_header}{If \code{TRUE}, does not display}
+
+\item{verbose}{If \code{TRUE} displays the verbose task output}
+
+\item{raw}{If \code{TRUE} returns the raw output rather than a \code{tibble}}
+
+\item{xml_type}{Displays the task definitions in XML format.  If \code{xml_type}
+is \code{single} then the output will be one valid \code{XML} file. If \code{concat} will
+concatenate all the \code{XML} definitions.}
+
+\item{enable}{If \code{TRUE} enables the scheduled task}
+
+\item{disable}{If \code{TRUE} disables the scheduled task}
+
+\item{convert}{Converts the output (currently only valid for \code{show_sid})}
+}
 \description{
 An R6 class for creating and checking a task call and wrappers
 }
@@ -114,16 +216,16 @@ Commands are passed using \code{\link[base:system2]{base::system2()}}
 Wrappers for R6 object creation and command execution:
 
 \describe{
-\item{\code{schtasks_run()}}{Runs a scheduled task on demand}
-\item{\code{schtasks_end()}}{Stops a currently running scheduled task}
-\item{\code{schtasks_create()}}{Create a scheduled tasks on a local or remote
+\item{\code{\link[=schtasks_run]{schtasks_run()}}}{Runs a scheduled task on demand}
+\item{\code{\link[=schtasks_end]{schtasks_end()}}}{Stops a currently running scheduled task}
+\item{\code{\link[=schtasks_create]{schtasks_create()}}}{Create a scheduled tasks on a local or remote
 system}
-\item{\code{schtasks_delete()}}{Deletes a scheduled task}
-\item{\code{schtasks_query()}}{Displays the scheduled tasks on the local or
+\item{\code{\link[=schtasks_delete]{schtasks_delete()}}}{Deletes a scheduled task}
+\item{\code{\link[=schtasks_query]{schtasks_query()}}}{Displays the scheduled tasks on the local or
 remote system.  Returns a \code{tibble}}
-\item{\code{schtasks_change()}}{Changes the program to run, or user account and
+\item{\code{\link[=schtasks_change]{schtasks_change()}}}{Changes the program to run, or user account and
 password used by a scheduled task}
-\item{\code{schtasks_showsid()}}{Shows the security identifier corresponding to
+\item{\code{\link[=schtasks_showsid]{schtasks_showsid()}}}{Shows the security identifier corresponding to
 a scheduled task name}
 }
 }
@@ -206,12 +308,15 @@ schtasks_query(
 }
 
 }
+\concept{schtasks}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{result}}{The the  the call}
 
 \item{\code{system_call}}{The system call of the function}
+
+\item{\code{exec}}{Should schtask.exe be executed?  For testing purposes only.}
 }
 \if{html}{\out{</div>}}
 }
@@ -273,115 +378,18 @@ Initializes the call
   disable = FALSE,
   env = "",
   convert = TRUE,
-  quiet = FALSE
+  quiet = FALSE,
+  exec = TRUE
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task_name}}{The path/name of the task to run now}
-
-\item{\code{system}}{The remote system to connect to}
-
-\item{\code{username}}{The user context under which the \code{schtasks.exe} should
-execute}
-
-\item{\code{password}}{The password for the given user context}
-
-\item{\code{runas_username}}{The "run as" user account (user context) under which
-the tasks runs.  For the system account, valid values are \code{""}, \code{"NT AUTHORITY/SYSTEM"}, or \code{"SYSTEM"}.  For v2 tasks, \code{"NT AUTHORITY/LOCALSERVICE"} and \code{"NT AUTHORITYNETWORKSERVICE"} are also
-available as well as the well known SIDs for all three.}
-
-\item{\code{runas_password}}{The password for the "run as" user.}
-
-\item{\code{schedule}}{The schedule frequency.  Valid schedule types are : \code{minute},
-\code{hourly}, \code{daily}, \code{weekly}, \code{monthly}, \code{once}, \code{on_start}, \code{on_logon},
-\code{on_idle}, and \code{on_event}}
-
-\item{\code{modifier}}{Refines the schedule type to allow finer control over
-schedule recurrence.  See section \code{Modifiers} for more details.}
-
-\item{\code{days}}{The day of the week to run the task.  Can be either the name of
-the week (or an abbreviation).  If \code{schedule} is \code{monthly} can accept 1-31.
-Use \code{*} to specify all months.}
-
-\item{\code{months}}{The month(s) of the year.  Defaults to the first of the month.
-Can use either the whole month (\code{month.name}) or month abbreviation
-(\code{month.abb}).}
-
-\item{\code{idle_time}}{The amount of idle time to wait before running a task. Only
-valid for schedule \code{on_idle}.  Valid range from 1 to 999 (minutes).}
-
-\item{\code{task_run}}{A string in the form of the \code{path/name} which uniquely
-identifies the scheduled task}
-
-\item{\code{start_time}}{The start time to run the task.  Time format is \code{HH:mm} (24
-hour time).  Can accept \code{POSIXct} or \code{POSIXlt}.  Two special cases of
-\code{"now"} and \code{"asap"} are accepted; which are converted to the current time
-or the next minute, respectively.}
-
-\item{\code{interval}}{The repetition interval in minutes.  Only applicable for
-\code{daily}, \code{weekly}, \code{monthly}, \code{once}.  Valid ranges are 1 - 599940. If
-\code{end_time} or \code{duration} are specified, \code{10} is set as the default.}
-
-\item{\code{end_time}}{The end time to run the task. The time format is \code{HH:mm} (24
-hour time).  Not applicable for \verb{on_*} schedules.}
-
-\item{\code{duration}}{The duration to run the task.  The time format is \code{HH:MM}.
-This is not applicable with \code{end_time}.  If \code{v1} is \code{TRUE} and \code{interval}
-is set, the duration defaults to \code{01:00}.}
-
-\item{\code{terminate}}{If \code{TRUE}, terminates the task at the \code{end_time} or
-\verb{duration time}.  This is not applicable for schedule types: \code{on_start},
-\code{on_logon}, \code{on_idle}, and \code{on_event}.`}
-
-\item{\code{start_date}}{The first date on which the task runs. Not applicable for
-schedules \code{once} or \verb{on_*}.}
-
-\item{\code{end_date}}{end_date The last date on which the task runs. Not applicable
-for schedules \code{once} or \verb{on_*}.}
-
-\item{\code{channel_name}}{The event channel for \code{on_event} triggers}
-
-\item{\code{delete_after_final}}{If \code{TRUE} marks the task for deletion after its
-final run.}
-
-\item{\code{v1}}{If \code{TRUE} creates a task visible to pre-Vista platforms}
-
-\item{\code{force}}{If \code{TRUE} forcefully creates the task and suppresses cmd
-warnings if the task already exists.}
-
-\item{\code{level}}{The run level for the job, either \code{limited} or \code{highest}.}
-
-\item{\code{delay_time}}{The wait time to delay the running of the task after the
-trigger is fired.  Time format is \code{mmmm::ss}.  Only valid for schedules
-\code{on_start}, \code{on_logon}, and \code{on_event}.}
-
-\item{\code{xml_file}}{A path to a \code{.xml} file}
-
-\item{\code{format}}{The format for the output.  One of: \code{csv}, \code{list}, or \code{table}}
-
-\item{\code{no_header}}{If \code{TRUE}, does not display}
-
-\item{\code{verbose}}{If \code{TRUE} displays the verbose task output}
-
-\item{\code{xml_type}}{Displays the task definitions in XML format.  If \code{xml_type}
-is \code{single} then the output will be one valid \code{XML} file. If \code{concat} will
-concatenate all the \code{XML} definitions.}
-
-\item{\code{raw}}{If \code{TRUE} returns the raw output rather than a \code{tibble}}
-
-\item{\code{enable}}{If \code{TRUE} enables the scheduled task}
-
-\item{\code{disable}}{If \code{TRUE} disables the scheduled task}
-
 \item{\code{env}}{character vector of name=value strings to set environment
 variables (passed to \code{\link[base:system2]{base::system2()}})}
 
-\item{\code{convert}}{Converts the output (currently only valid for \code{show_sid})}
-
-\item{\code{quiet}}{If \code{TRUE} will suppress outputs}
+\item{\code{exec}}{If \code{FALSE} will not run \code{\link[base:system2]{base::system2()}}}
 }
 \if{html}{\out{</div>}}
 }
