@@ -983,19 +983,3 @@ TaskScheduler <- R6::R6Class(
     check_idletime           = function() { }
   )
 )
-
-
-# print -------------------------------------------------------------------
-
-
-#' @export
-print.rschtasks_call <- function(x, ...) {
-  cat(crayon::yellow(x[[1]]), x$args, "\n")
-  invisible(x)
-}
-
-#' @export
-print.rschtasks_result <- function(x, ...) {
-  cat(gsub("^SUCCESS", crayon::green("SUCCESS"), attr(x, "stdout")), "\n")
-  invisible(x)
-}
