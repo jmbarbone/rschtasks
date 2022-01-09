@@ -1,4 +1,4 @@
 test_that("TaskScheduler works", {
   # initializes fine with default values
-  expect_error(TaskScheduler$new(), NA)
+  expect_s3_class(TaskScheduler$new(), c("TaskScheduler", "R6"))
 })
