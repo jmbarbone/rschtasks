@@ -108,6 +108,14 @@
 #'   \item{`on_event`}{XPath event query string}
 #' }
 #'
+#'
+#' @section `schtasks.exe`:
+#'
+#' These functions specifically make it easier to an R user on Windows to
+#' interact with the
+#' [`Schtasks.exe`](https://docs.microsoft.com/en-us/windows/win32/taskschd/schtasks)
+#' applications.  Note that successful use of `Schtasks.exe` required **Administrative privledged** and should be _run as an administrator_.  This will likely be an issue if the user is using Rstudio
+#'
 #' @examples
 #' \dontrun{
 #' # These are recreations of the examples from the cmd help documents.  These

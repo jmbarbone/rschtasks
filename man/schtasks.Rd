@@ -249,6 +249,15 @@ Valid values for the modifiers are as follows:
 }
 }
 
+\section{\code{schtasks.exe}}{
+
+
+These functions specifically make it easier to an R user on Windows to
+interact with the
+\href{https://docs.microsoft.com/en-us/windows/win32/taskschd/schtasks}{\code{Schtasks.exe}}
+applications.  Note that successful use of \code{Schtasks.exe} required \strong{Administrative privledged} and should be \emph{run as an administrator}.  This will likely be an issue if the user is using Rstudio
+}
+
 \examples{
 \dontrun{
 # These are recreations of the examples from the cmd help documents.  These
