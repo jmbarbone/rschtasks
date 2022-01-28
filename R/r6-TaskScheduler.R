@@ -634,8 +634,8 @@ TaskScheduler <- R6::R6Class(
     check_days = function() {
       # browser()
 
-      if (private$schedule == "ONCE") {
-        # /D is not applicable for /SC ONCE
+      if (private$schedule %out% c("MONTHLY", "WEEKLY")) {
+        # /D only applicable for month and week
         private$days <- NULL
         return()
       }
