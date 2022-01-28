@@ -635,7 +635,9 @@ TaskScheduler <- R6::R6Class(
       # browser()
 
       if (private$schedule == "ONCE") {
+        # /D is not applicable for /SC ONCE
         private$days <- NULL
+        return()
       }
 
       private$days <- private$days %||% "*"
