@@ -48,7 +48,7 @@ task$create()
 task$result
 #> SUCCESS: The scheduled task "open notepad" has successfully been created.
 task$system_call
-#> schtasks /create /sc ONCE /tn "open notepad" /tr notepad /st 17:05 /f /rl limited
+#> schtasks /create /sc ONCE /tn "open notepad" /tr notepad /st 14:47 /f /rl limited
 
 task$show_sid()
 task$result
