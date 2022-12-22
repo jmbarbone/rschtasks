@@ -1,5 +1,11 @@
 #' @importFrom mark %out%
 
+is_admin <- function() {
+  # https://stackoverflow.com/a/16285248/12126576
+  msg <- system2("net", "session", stdout = TRUE)
+  !any(grepl("access is denied", msg, ignore.case = TRUE))
+}
+
 check_windows <- function() {
   fun <- mark::outer_fun()
   if (!is_windows()) {
