@@ -66,6 +66,10 @@ TaskScheduler <- R6::R6Class(
       exec               = TRUE
     ) {
 
+      if (!is_admin()) {
+        warn("You do not appear to have admin access.")
+      }
+
       self$exec <- is_true(exec)
       private$check_windows()
       private$check_schtasks()
@@ -432,6 +436,10 @@ TaskScheduler <- R6::R6Class(
 
     # calls schtasks via system2s
     schtasks = function() {
+      if (!is_admin()) {
+        abort("You do not appear to have admin access.")
+      }
+
       self$system_call <- structure(
         list(
           "schtasks",

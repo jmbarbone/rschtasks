@@ -25,14 +25,14 @@ Description of wrapper
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{r6_class$new()}}
-\item \href{#method-get_result}{\code{r6_class$get_result()}}
-\item \href{#method-clone}{\code{r6_class$clone()}}
+\item \href{#method-r6_class-new}{\code{r6_class$new()}}
+\item \href{#method-r6_class-get_result}{\code{r6_class$get_result()}}
+\item \href{#method-r6_class-clone}{\code{r6_class$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-r6_class-new"></a>}}
+\if{latex}{\out{\hypertarget{method-r6_class-new}{}}}
 \subsection{Method \code{new()}}{
 makes object
 \subsection{Usage}{
@@ -41,8 +41,8 @@ makes object
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_result"></a>}}
-\if{latex}{\out{\hypertarget{method-get_result}{}}}
+\if{html}{\out{<a id="method-r6_class-get_result"></a>}}
+\if{latex}{\out{\hypertarget{method-r6_class-get_result}{}}}
 \subsection{Method \code{get_result()}}{
 get result
 \subsection{Usage}{
@@ -58,8 +58,8 @@ get result
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-r6_class-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-r6_class-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
