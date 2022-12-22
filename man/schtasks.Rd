@@ -332,21 +332,21 @@ schtasks_query(
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{TaskScheduler$new()}}
-\item \href{#method-run}{\code{TaskScheduler$run()}}
-\item \href{#method-end}{\code{TaskScheduler$end()}}
-\item \href{#method-create}{\code{TaskScheduler$create()}}
-\item \href{#method-create_xml}{\code{TaskScheduler$create_xml()}}
-\item \href{#method-delete}{\code{TaskScheduler$delete()}}
-\item \href{#method-query}{\code{TaskScheduler$query()}}
-\item \href{#method-change}{\code{TaskScheduler$change()}}
-\item \href{#method-show_sid}{\code{TaskScheduler$show_sid()}}
-\item \href{#method-clone}{\code{TaskScheduler$clone()}}
+\item \href{#method-TaskScheduler-new}{\code{TaskScheduler$new()}}
+\item \href{#method-TaskScheduler-run}{\code{TaskScheduler$run()}}
+\item \href{#method-TaskScheduler-end}{\code{TaskScheduler$end()}}
+\item \href{#method-TaskScheduler-create}{\code{TaskScheduler$create()}}
+\item \href{#method-TaskScheduler-create_xml}{\code{TaskScheduler$create_xml()}}
+\item \href{#method-TaskScheduler-delete}{\code{TaskScheduler$delete()}}
+\item \href{#method-TaskScheduler-query}{\code{TaskScheduler$query()}}
+\item \href{#method-TaskScheduler-change}{\code{TaskScheduler$change()}}
+\item \href{#method-TaskScheduler-show_sid}{\code{TaskScheduler$show_sid()}}
+\item \href{#method-TaskScheduler-clone}{\code{TaskScheduler$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-new}{}}}
 \subsection{Method \code{new()}}{
 Initializes the call
 \subsection{Usage}{
@@ -404,8 +404,8 @@ variables (passed to \code{\link[base:system2]{base::system2()}})}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-run"></a>}}
-\if{latex}{\out{\hypertarget{method-run}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-run"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-run}{}}}
 \subsection{Method \code{run()}}{
 Runs \verb{schtasks run}
 \subsection{Usage}{
@@ -414,8 +414,8 @@ Runs \verb{schtasks run}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-end"></a>}}
-\if{latex}{\out{\hypertarget{method-end}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-end"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-end}{}}}
 \subsection{Method \code{end()}}{
 Runs \verb{schtasks end}
 \subsection{Usage}{
@@ -424,8 +424,8 @@ Runs \verb{schtasks end}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create"></a>}}
-\if{latex}{\out{\hypertarget{method-create}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-create"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-create}{}}}
 \subsection{Method \code{create()}}{
 Runs \verb{schtasks create}
 \subsection{Usage}{
@@ -434,8 +434,8 @@ Runs \verb{schtasks create}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-create_xml"></a>}}
-\if{latex}{\out{\hypertarget{method-create_xml}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-create_xml"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-create_xml}{}}}
 \subsection{Method \code{create_xml()}}{
 creates a task using an xml file, a special variant for
 \verb{schtasks create}
@@ -445,8 +445,8 @@ creates a task using an xml file, a special variant for
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-delete"></a>}}
-\if{latex}{\out{\hypertarget{method-delete}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-delete}{}}}
 \subsection{Method \code{delete()}}{
 Runs \verb{schtasks delete}
 \subsection{Usage}{
@@ -455,8 +455,8 @@ Runs \verb{schtasks delete}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-query"></a>}}
-\if{latex}{\out{\hypertarget{method-query}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-query"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-query}{}}}
 \subsection{Method \code{query()}}{
 Runs \verb{schtasks query}
 \subsection{Usage}{
@@ -465,8 +465,8 @@ Runs \verb{schtasks query}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-change"></a>}}
-\if{latex}{\out{\hypertarget{method-change}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-change"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-change}{}}}
 \subsection{Method \code{change()}}{
 Runs \verb{schtasks change}
 \subsection{Usage}{
@@ -475,8 +475,8 @@ Runs \verb{schtasks change}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-show_sid"></a>}}
-\if{latex}{\out{\hypertarget{method-show_sid}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-show_sid"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-show_sid}{}}}
 \subsection{Method \code{show_sid()}}{
 Runs \verb{schtasks showsid}
 check days
@@ -488,8 +488,8 @@ check idle_time
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-TaskScheduler-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskScheduler-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
