@@ -74,6 +74,8 @@ TaskScheduler <- R6::R6Class(
       private$check_windows()
       private$check_schtasks()
 
+      # save the original entry because other methods will update during $run().
+      # This allows us to then use the same entries with multiple runs
       private$orig$task_name           <- private$task_name          <- task_name
       private$orig$system              <- private$system             <- system
       private$orig$username            <- private$username           <- username

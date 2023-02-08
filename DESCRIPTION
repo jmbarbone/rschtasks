@@ -2,7 +2,7 @@ Package: rschtasks
 Title: Interface for schtasks
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Jordan",
+    person(given = "Jordan Mark",
            family = "Barbone",
            role = c("aut", "cph", "cre"),
            email = "jmbarbone@gmail.com",
